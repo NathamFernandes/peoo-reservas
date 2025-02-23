@@ -2,7 +2,6 @@ import LocacaoRepository from "../repositories/LocacaoRepository.js";
 
 const LocacaoController = {
 
-    // Função para buscar todas as locações
     async getAll(req, res) {
         try {
             const locacoes = await LocacaoRepository.findAll();
@@ -12,7 +11,6 @@ const LocacaoController = {
         }
     },
 
-    // Função para criar uma nova locação
     async create(req, res) {
         const { data_inicio, data_final, cliente_id } = req.body;
         try {
@@ -24,7 +22,6 @@ const LocacaoController = {
         }
     },
 
-    // Função para buscar uma locação por ID
     async getById(req, res) {
         const { id } = req.params;
         try {
@@ -39,7 +36,6 @@ const LocacaoController = {
         }
     },
 
-    // Função para atualizar uma locação existente
     async update(req, res) {
         const { id } = req.params;
         const { data_inicio, data_final, data_devolucao, cliente_id } = req.body;
@@ -57,13 +53,12 @@ const LocacaoController = {
         }
     },
 
-    // Função para excluir uma locação
     async destroy(req, res) {
         const { id } = req.params;
         try {
             const locacaoDeletada = await LocacaoRepository.deleteLocacao(id);
             if (locacaoDeletada) {
-                res.status(204).send(); // Envia código de sucesso sem conteúdo
+                res.status(204).send();
             } else {
                 res.status(404).json({ error: "Locação não encontrada para exclusão" });
             }

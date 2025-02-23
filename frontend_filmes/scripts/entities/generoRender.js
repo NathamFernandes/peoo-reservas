@@ -1,7 +1,6 @@
 import { get, post, put, del } from "../api.js";
 import state from "../state.js";
 
-// Função para carregar os gêneros
 const carregarGeneros = async () => {
     const generos = await get("http://localhost:3000/generos");
     state.generos = generos;
@@ -9,7 +8,6 @@ const carregarGeneros = async () => {
     renderizarListaGeneros(generos);
 };
 
-// Função para renderizar a lista de gêneros
 const renderizarListaGeneros = (generos) => {
     let tabela = `
         <button type="button" class="btn btn-primary" id="novo-genero">Cadastrar novo gênero</button>
@@ -66,7 +64,6 @@ const renderizarListaGeneros = (generos) => {
     });
 };
 
-// Função para renderizar o formulário de gênero
 const renderizarFormularioGenero = () => {
     const formulario = `
         <form id="form-genero">
@@ -88,7 +85,6 @@ const renderizarFormularioGenero = () => {
     });
 };
 
-// Função para renderizar o formulário de edição de gênero
 const renderizarFormularioEdicao = (genero) => {
     const formulario = `
         <form id="form-editar-genero">

@@ -1,7 +1,6 @@
 import { get, post, put, del } from "../api.js";
 import state from "../state.js";
 
-// Função para carregar os clientes
 const carregarClientes = async () => {
     const clientes = await get("http://localhost:3000/clientes");
     state.clientes = clientes;
@@ -9,7 +8,6 @@ const carregarClientes = async () => {
     renderizarListaClientes(clientes);
 };
 
-// Função para renderizar a lista de clientes
 const renderizarListaClientes = (clientes) => {
     let tabela = `
         <button type="button" class="btn btn-primary" id="novo-cliente">Cadastrar novo cliente</button>
@@ -72,7 +70,6 @@ const renderizarListaClientes = (clientes) => {
     });
 };
 
-// Função para renderizar o formulário de cliente
 const renderizarFormularioCliente = () => {
     const formulario = `
         <form id="form-cliente">
@@ -110,7 +107,6 @@ const renderizarFormularioCliente = () => {
     });
 };
 
-// Função para renderizar o formulário de edição de cliente
 const renderizarFormularioEdicao = (cliente) => {
     const formulario = `
         <form id="form-editar-cliente">

@@ -23,7 +23,7 @@ const FilmeController = {
     },
 
     async getById(req, res) {
-        const { id } = req.params; // O ID será passado como parâmetro na URL
+        const { id } = req.params;
         try {
             const filme = await FilmeRepository.findById(id);
             if (filme) {
@@ -36,7 +36,6 @@ const FilmeController = {
         }
     },
 
-    // Método para atualizar um filme
     async update(req, res) {
         const { id } = req.params;
         const { titulo, genero_id, ano, diretor, sinopse, classificacao, elenco, status } = req.body;
@@ -53,7 +52,6 @@ const FilmeController = {
         }
     },
 
-    // Método para excluir um filme
     async destroy(req, res) {
         const { id } = req.params;
         try {
@@ -64,7 +62,7 @@ const FilmeController = {
 
             const sucesso = await FilmeRepository.deleteFilme(id);
             if (sucesso) {
-                res.status(204).send(); // Filme excluído com sucesso
+                res.status(204).send();
             } else {
                 res.status(400).json({ error: "Erro na exclusão do filme" });
             }

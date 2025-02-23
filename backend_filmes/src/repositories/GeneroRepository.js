@@ -21,7 +21,7 @@ const GeneroRepository = {
         if (row) {
             return new Genero(row.id, row.nome);
         }
-        return null; // Retorna null se não encontrar o gênero
+        return null;
     },
 
     async updateGenero(id, genero) {

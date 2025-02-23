@@ -1,11 +1,8 @@
-
-//Função genérica para realizar uma requisição GET
 const get = async (url) => {
     const response = await fetch(url);
     return await response.json();
 };
 
-//Função genérica para realizar uma requisição POST
 const post = async (url, data) => {
     await fetch(url, {
         method: "POST",
@@ -14,7 +11,6 @@ const post = async (url, data) => {
     });
 };
 
-//Função genérica para realizar uma requisição DELETE
 const del = async (url) => {
     let response = await fetch(url, {
         method: "DELETE",

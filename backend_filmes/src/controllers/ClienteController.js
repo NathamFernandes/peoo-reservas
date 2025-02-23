@@ -24,7 +24,7 @@ const ClienteController = {
     },
 
     async getById(req, res) {
-        const { id } = req.params; // O ID será passado como parâmetro na URL
+        const { id } = req.params;
         try {
             const cliente = await ClienteRepository.findById(id);
             if (cliente) {

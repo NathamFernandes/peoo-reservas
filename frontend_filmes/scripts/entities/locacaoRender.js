@@ -1,16 +1,13 @@
 import { get, post, put, del } from "../api.js";
 import state from "../state.js";
 
-// Função para carregar as locações
 const carregarLocacoes = async () => {
     const locacoes = await get("http://localhost:3000/locacoes");
     state.locacoes = locacoes;
     renderizarListaLocacoes(locacoes);
 };
 
-// Função para renderizar a lista de locações
 const renderizarListaLocacoes = async (locacoes) => {
-    // Filtra as locações para não mostrar as que possuem data_devolucao preenchida
     const locacoesAtivas = locacoes.filter(locacao => !locacao.data_devolucao);
 
     let tabela = `
@@ -77,7 +74,6 @@ const renderizarListaLocacoes = async (locacoes) => {
     });
 };
 
-// Função para renderizar o formulário de locação
 const renderizarFormularioLocacao = async () => {
     const clientes = await get("http://localhost:3000/clientes");
     const clienteOptions = clientes.map(cliente => `<option value="${cliente.id}">${cliente.nome}</option>`).join(" ");
@@ -109,11 +105,10 @@ const renderizarFormularioLocacao = async () => {
         const data_final = document.getElementById("data-final").value;
 
         await post("http://localhost:3000/locacoes", { cliente_id, data_inicio, data_final });
-        await carregarLocacoes(); // Recarrega os dados
+        await carregarLocacoes();
     });
 };
 
-// Função para renderizar o formulário de edição de locação
 const renderizarFormularioEdicaoLocacao = async (locacao) => {
     const clientes = await get("http://localhost:3000/clientes");
     const clienteOptions = clientes.map(cliente => `
@@ -152,7 +147,7 @@ const renderizarFormularioEdicaoLocacao = async (locacao) => {
         const data_devolucao = document.getElementById("data-devolucao").value;
 
         await put(`http://localhost:3000/locacoes/${locacao.id}`, { cliente_id, data_inicio, data_final, data_devolucao });
-        await carregarLocacoes(); // Recarrega os dados
+        await carregarLocacoes();
     });
 };
 

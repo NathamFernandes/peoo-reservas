@@ -9,7 +9,6 @@ import FilmeRouters from "./src/routers/FilmeRouters.js";
 import LocacaoRouters from "./src/routers/LocacaoRouters.js";
 import LocacaoItemRouters from "./src/routers/LocacaoItemRouters.js";
 
-//Definição de uma constante para a porta TCP
 const PORT = process.env.PORT || 3000;
 
 app.use("/generos", GeneroRouters);
@@ -18,9 +17,8 @@ app.use("/filmes", FilmeRouters);
 app.use("/locacoes", LocacaoRouters);
 app.use("/locacoes-item", LocacaoItemRouters);
 
-//Inicialização de um servidor WEB
 app.listen(PORT, () => {
     console.log("Servidor inicializado");
 });
 
-// your life is your own - N (love u BT)
+// your life is your own - N. (love u, T <3)

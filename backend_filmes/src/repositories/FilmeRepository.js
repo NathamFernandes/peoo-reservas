@@ -50,10 +50,9 @@ const FilmeRepository = {
                 row.status
             );
         }
-        return null; // Retorna null se não encontrar o filme
+        return null;
     },
 
-    // Método para atualizar um filme
     async updateFilme(id, filme) {
         const result = await connection1.query(
             `UPDATE filme 
@@ -73,17 +72,15 @@ const FilmeRepository = {
         );
 
         if (result.affectedRows > 0) {
-            // Se foi atualizado, retorna o filme atualizado
             return { ...filme, id };
         }
-        return null; // Retorna null se não houver alteração
+        return null;
     },
 
-    // Método para excluir um filme
     async deleteFilme(id) {
         const result = await connection1.query("DELETE FROM filme WHERE id = ?", [id]);
 
-        return result.affectedRows > 0; // Retorna true se o filme foi excluído
+        return result.affectedRows > 0;
     }
 }
 

@@ -28,7 +28,6 @@ export const runMigrations = async () => {
         const files = fs.readdirSync(migrationsDir);
         const sqlFiles = files.filter(file => path.extname(file) === '.sql');
 
-        // Ordena os arquivos pelo nome (que deve conter a data)
         sqlFiles.sort();
 
         for (const file of sqlFiles) {

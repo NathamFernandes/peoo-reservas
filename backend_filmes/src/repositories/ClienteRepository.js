@@ -22,7 +22,7 @@ const ClienteRepository = {
         if (row) {
             return new Cliente(row.id, row.nome, row.endereco, row.email, row.cpf);
         }
-        return null; // Retorna null se não encontrar o cliente
+        return null;
     },
 
     async updateCliente(id, cliente) {

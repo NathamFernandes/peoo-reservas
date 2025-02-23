@@ -23,7 +23,7 @@ const LocacaoItemController = {
     },
 
     async getById(req, res) {
-        const { id } = req.params; // O ID será passado como parâmetro na URL
+        const { id } = req.params;
         try {
             const locacaoItem = await LocacaoItemRepository.findById(id);
             if (locacaoItem) {
@@ -36,9 +36,8 @@ const LocacaoItemController = {
         }
     },
 
-    // Método para atualizar um locação item
     async update(req, res) {
-        const { id } = req.params; // O ID será passado como parâmetro na URL
+        const { id } = req.params;
         const { locacao_id, filme_id, preco } = req.body;
         try {
             const locacaoItemExistente = await LocacaoItemRepository.findById(id);
@@ -54,14 +53,13 @@ const LocacaoItemController = {
         }
     },
 
-    // Método para deletar um locação item
     async destroy(req, res) {
-        const { id } = req.params; // O ID será passado como parâmetro na URL
+        const { id } = req.params;
         try {
             const locacaoItemExistente = await LocacaoItemRepository.findById(id);
             if (locacaoItemExistente) {
                 await LocacaoItemRepository.deleteLocacaoItem(id);
-                res.status(204).json(); // 204 é "No Content" para indicar que foi deletado com sucesso
+                res.status(204).json();
             } else {
                 res.status(404).json({ error: "Locação item não encontrado para deletar" });
             }

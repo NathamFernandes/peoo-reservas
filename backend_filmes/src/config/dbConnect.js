@@ -11,10 +11,8 @@ const dbConfig = {
     database: process.env.NAME_DB || "backend_filmes"
 };
 
-//Cria objeto de conexão
 const connection = mysql.createConnection(dbConfig);
 
-//Tenta abrir a conexão com o banco
 connection.connect((error) => {
     if (error) {
         console.log(error);
@@ -24,7 +22,6 @@ connection.connect((error) => {
     console.log("Conexão realizada com sucesso");
 })
 
-//Transforma o método query do objeto connection em promise
 connection.query = util.promisify(connection.query).bind(connection);
 
 export default connection;

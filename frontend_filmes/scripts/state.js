@@ -1,5 +1,5 @@
 const state = {
-    entidades: {} // Armazena dinamicamente os dados de qualquer entidade
+    entidades: {}
 };
 
 export default state;

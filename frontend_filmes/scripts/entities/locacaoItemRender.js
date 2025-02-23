@@ -1,20 +1,17 @@
 import { get, post, put, del } from "../api.js";
 import state from "../state.js";
 
-// Função para carregar os itens de locação
 const carregarLocacaoItens = async () => {
     try {
         const locacaoItens = await get("http://localhost:3000/locacoes-item");
         console.log("Dados obtidos da API:", locacaoItens);
 
-        // Renderiza todos os itens de locação na tabela
         renderizarListaLocacaoItens(locacaoItens);
     } catch (err) {
         console.error("Erro ao carregar itens de locação:", err);
     }
 };
 
-// Função para renderizar a lista de itens de locação
 const renderizarListaLocacaoItens = async (locacaoItens) => {
     try {
         console.log("Itens de locação recebidos para renderização:", locacaoItens);
@@ -67,7 +64,6 @@ const renderizarListaLocacaoItens = async (locacaoItens) => {
         tabela += bodyTabela.join(" ") + "</tbody></table>";
         document.getElementById("app-content").innerHTML = tabela;
 
-        // Adiciona eventos aos botões
         document.getElementById("novo-locacao-item").addEventListener("click", () => {
             renderizarFormularioLocacaoItem();
         });
@@ -94,22 +90,18 @@ const renderizarListaLocacaoItens = async (locacaoItens) => {
     }
 };
 
-// Função para renderizar o formulário de cadastro de novo item de locação
 const renderizarFormularioLocacaoItem = async () => {
     try {
         const locacoes = await get("http://localhost:3000/locacoes");
         const filmes = await get("http://localhost:3000/filmes");
         const locacaoItens = await get("http://localhost:3000/locacoes-item");
 
-        // Filtra filmes para excluir os que têm status 2 (indisponíveis)
         const filmesDisponiveis = filmes.filter(filme => filme.status !== 2);
 
-        // Filtra locações para excluir as que já possuem um item de locação
         const locacoesDisponiveis = locacoes.filter(locacao =>
             !locacaoItens.some(item => item.locacao_id === locacao.id)
         );
 
-        // Gera as opções para o select de locações
         const locacaoOptions = await Promise.all(locacoesDisponiveis.map(async (locacao) => {
             const cliente = await get(`http://localhost:3000/clientes/${locacao.cliente_id}`);
             return `
@@ -117,12 +109,10 @@ const renderizarFormularioLocacaoItem = async () => {
             `;
         }));
 
-        // Gera as opções para o select de filmes
         const filmeOptions = filmesDisponiveis.map(filme => `
             <option value="${filme.id}">${filme.titulo}</option>
         `).join(" ");
 
-        // Renderiza o formulário
         const formulario = `
             <form id="form-locacao-item">
                 <div class="form-group">
@@ -143,21 +133,17 @@ const renderizarFormularioLocacaoItem = async () => {
 
         document.getElementById("app-content").innerHTML = formulario;
 
-        // Adiciona o evento de submit ao formulário
         document.getElementById("form-locacao-item").addEventListener("submit", async (e) => {
             e.preventDefault();
             const locacao_id = document.getElementById("locacao").value;
             const filme_id = document.getElementById("filme").value;
             const preco = document.getElementById("preco").value;
 
-            // Cria o item de locação
             const novoItem = await post("http://localhost:3000/locacoes-item", { locacao_id, filme_id, preco });
 
-            // Atualiza o filme para status 2 (indisponível)
             const filme = await get(`http://localhost:3000/filmes/${filme_id}`);
             await put(`http://localhost:3000/filmes/${filme_id}`, { ...filme, status: 2 });
 
-            // Recarrega os itens de locação
             await carregarLocacaoItens();
         });
     } catch (err) {
@@ -165,16 +151,13 @@ const renderizarFormularioLocacaoItem = async () => {
     }
 };
 
-// Função para renderizar o formulário de edição de item de locação
 const renderizarFormularioEdicaoLocacaoItem = async (locacaoItem) => {
     try {
         const locacoes = await get("http://localhost:3000/locacoes");
         const filmes = await get("http://localhost:3000/filmes");
 
-        // Filtra filmes para excluir os que têm status 2 (indisponíveis)
         const filmesDisponiveis = filmes.filter(filme => filme.status !== 2);
 
-        // Gera as opções para o select de locações
         const locacaoOptions = await Promise.all(locacoes.map(async (locacao) => {
             const cliente = await get(`http://localhost:3000/clientes/${locacao.cliente_id}`);
             return `
@@ -184,12 +167,10 @@ const renderizarFormularioEdicaoLocacaoItem = async (locacaoItem) => {
             `;
         }));
 
-        // Gera as opções para o select de filmes
         const filmeOptions = filmesDisponiveis.map(filme => `
             <option value="${filme.id}" ${filme.id === locacaoItem.filme_id ? 'selected' : ''}>${filme.titulo}</option>
         `).join(" ");
 
-        // Renderiza o formulário
         const formulario = `
             <form id="form-editar-locacao-item">
                 <div class="form-group">
@@ -210,24 +191,19 @@ const renderizarFormularioEdicaoLocacaoItem = async (locacaoItem) => {
 
         document.getElementById("app-content").innerHTML = formulario;
 
-        // Adiciona o evento de submit ao formulário
         document.getElementById("form-editar-locacao-item").addEventListener("submit", async (e) => {
             e.preventDefault();
             const locacao_id = document.getElementById("locacao").value;
             const filme_id = document.getElementById("filme").value;
             const preco = document.getElementById("preco").value;
 
-            // Atualiza o item de locação
             await put(`http://localhost:3000/locacoes-item/${locacaoItem.id}`, { locacao_id, filme_id, preco });
 
-            // Verifica se o filme selecionado não está com status 2 (indisponível) antes de atualizar
             const filme = await get(`http://localhost:3000/filmes/${filme_id}`);
             if (filme.status !== 2) {
-                // Atualiza o filme com todos os campos, incluindo status 2
                 await put(`http://localhost:3000/filmes/${filme_id}`, { ...filme, status: 2 });
             }
 
-            // Atualiza o status do filme anterior para 1 (disponível) apenas se for necessário
             if (filme_id !== locacaoItem.filme_id) {
                 const filmeAnterior = await get(`http://localhost:3000/filmes/${locacaoItem.filme_id}`);
                 if (filmeAnterior.status !== 1) {
@@ -235,7 +211,6 @@ const renderizarFormularioEdicaoLocacaoItem = async (locacaoItem) => {
                 }
             }
 
-            // Carrega novamente os itens de locação
             await carregarLocacaoItens();
         });
     } catch (err) {

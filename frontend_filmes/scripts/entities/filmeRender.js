@@ -1,15 +1,12 @@
 import { get, post, put, del } from "../api.js";
 import state from "../state.js";
 
-// Função para carregar os filmes
 const carregarFilmes = async () => {
     const filmes = await get("http://localhost:3000/filmes");
 
-    // Mapeia os filmes para incluir o nome do gênero
     for (let filme of filmes) {
         const genero = await get(`http://localhost:3000/generos/${filme.genero_id}`);
         filme.genero_nome = genero ? genero.nome : "Desconhecido";
-        // Converte o status para uma forma amigável
         filme.status_nome = filme.status === 1 ? "Disponível" : "Alugado";
     }
 
@@ -17,7 +14,6 @@ const carregarFilmes = async () => {
     renderizarListaFilmes(filmes);
 };
 
-// Função para renderizar a lista de filmes
 const renderizarListaFilmes = (filmes) => {
     let tabela = `
         <button type="button" class="btn btn-primary" id="novo-filme">Cadastrar novo filme</button>
@@ -88,7 +84,6 @@ const renderizarListaFilmes = (filmes) => {
     });
 };
 
-// Função para renderizar o formulário de filme
 const renderizarFormularioFilme = async () => {
     const generos = await get("http://localhost:3000/generos");
 
@@ -145,11 +140,10 @@ const renderizarFormularioFilme = async () => {
         const status = 1;
 
         await post("http://localhost:3000/filmes", { titulo, genero_id, ano, diretor, sinopse, classificacao, elenco, status });
-        await carregarFilmes(); // Recarrega os dados
+        await carregarFilmes();
     });
 };
 
-// Função para renderizar o formulário de edição de filme
 const renderizarFormularioEdicao = async (filme) => {
     const generos = await get("http://localhost:3000/generos");
 
@@ -213,7 +207,7 @@ const renderizarFormularioEdicao = async (filme) => {
         const status = document.getElementById("status").value;
 
         await put(`http://localhost:3000/filmes/${filme.id}`, { titulo, genero_id, ano, diretor, sinopse, classificacao, elenco, status });
-        await carregarFilmes(); // Recarrega os dados
+        await carregarFilmes();
     });
 };
 
