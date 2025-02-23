@@ -1,25 +1,19 @@
 
-import { carregarQuantidadeProjetos } from "./dashboard.js";
-import { carregarProjetos } from "./projetos.js";
+import carregarGeneros from "./entities/generoRender.js";
 
 const route = routeName => {
     console.log(routeName);
     switch (routeName) {
         case "home":
-            carregarQuantidadeProjetos();
-            // carregarFilmes();
+            document.getElementById("app-content").innerHTML = "Home";
             break;
-        case "cadastrar-filme":
-            // 
+        case "generos":
+            carregarGeneros();
             break;
-        case "projetos":
-            carregarProjetos();
+        case "clientes":
             break;
-        case "tarefas":
-            document.getElementById("app-content").innerHTML = "Tarefas";
+        case "filmes":
             break;
-        //default:
-        //
     }
 };
 

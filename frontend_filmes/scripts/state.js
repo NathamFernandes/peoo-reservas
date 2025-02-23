@@ -1,6 +1,5 @@
 const state = {
-    projetos : [],
-    quantidadeProjetos : 0
+    entidades: {} // Armazena dinamicamente os dados de qualquer entidade
 };
 
 export default state;
