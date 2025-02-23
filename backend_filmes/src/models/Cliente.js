@@ -1,40 +1,40 @@
 class Categoria {
     constructor(id, nome, endereco, email, cpf) {
-        this._id = id;
-        this._nome = nome;
-        this._endereco = endereco;
-        this._email = email;
-        this._cpf = cpf;
+        this.id = id;
+        this.nome = nome;
+        this.endereco = endereco;
+        this.email = email;
+        this.cpf = cpf;
     }
     setId(id) {
-        this._id = id;
+        this.id = id;
     }
     setNome(nome) {
-        this._nome = nome;
+        this.nome = nome;
     }
     setEndereco(endereco) {
-        this._endereco = endereco;
+        this.endereco = endereco;
     }
     setEmail(email) {
-        this._email = email;
+        this.email = email;
     }
     setCpf(cpf) {
-        this._cpf = cpf;
+        this.cpf = cpf;
     }
     getId() {
-        return this._id;
+        return this.id;
     }
     getNome() {
-        return this._nome;
+        return this.nome;
     }
     getEndereco() {
-        return this._endereco;
+        return this.endereco;
     }
     getEmail() {
-        return this._email;
+        return this.email;
     }
     getCpf() {
-        return this._cpf;
+        return this.cpf;
     }
 }
 

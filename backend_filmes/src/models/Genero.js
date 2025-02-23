@@ -1,19 +1,19 @@
 class Categoria {
     constructor(id, nome) {
-        this._id = id;
-        this._nome = nome;
+        this.id = id;
+        this.nome = nome;
     }
     setId(id) {
-        this._id = id;
+        this.id = id;
     }
     setNome(nome) {
-        this._nome = nome;
+        this.nome = nome;
     }
     getId() {
-        return this._id;
+        return this.id;
     }
     getNome() {
-        return this._nome;
+        return this.nome;
     }
 }
 

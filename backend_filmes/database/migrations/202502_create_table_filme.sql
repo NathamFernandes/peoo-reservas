@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS filme (
   diretor VARCHAR(200),
   sinopse LONGTEXT,
   classificacao VARCHAR(100),
+  elenco longtext,
   genero_id INT NOT NULL,
-  status varchar(100),
+  status integer,
   FOREIGN KEY (genero_id) REFERENCES genero(id) ON DELETE CASCADE
 );
