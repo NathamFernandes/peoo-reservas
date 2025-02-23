@@ -20,6 +20,20 @@ const GeneroController = {
         } catch (err) {
             res.status(500).json({ error: "Erro na criação do gênero", err });
         }
+    },
+
+    async getById(req, res) {
+        const { id } = req.params; // O ID será passado como parâmetro na URL
+        try {
+            const genero = await GeneroRepository.findById(id);
+            if (genero) {
+                res.json(genero);
+            } else {
+                res.status(404).json({ error: "Gênero não encontrado" });
+            }
+        } catch (err) {
+            res.status(500).json({ error: "Erro na busca do gênero", err });
+        }
     }
 
 }

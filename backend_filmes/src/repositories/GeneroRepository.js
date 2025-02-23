@@ -14,6 +14,14 @@ const GeneroRepository = {
         );
         genero.id = result.insertId;
         return genero;
+    },
+
+    async findById(id) {
+        const [row] = await connection1.query("select * from genero where id = ?", [id]);
+        if (row) {
+            return new Genero(row.id, row.nome);
+        }
+        return null; // Retorna null se não encontrar o gênero
     }
 }
 

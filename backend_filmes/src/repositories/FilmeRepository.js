@@ -3,7 +3,12 @@ import connection1 from "../config/dbConnect.js";
 
 const FilmeRepository = {
     async findAll() {
-        const rows = await connection1.query("select * from filme", []);
+        const rows = await connection1.query(`
+            SELECT filme.*, genero.nome AS genero 
+            FROM filme 
+            INNER JOIN genero ON filme.genero_id = genero.id
+        `, []);
+
         return rows.map(row => new Filme(
             row.id,
             row.titulo,
@@ -13,7 +18,8 @@ const FilmeRepository = {
             row.sinopse,
             row.classificacao,
             row.elenco,
-            row.status
+            row.status,
+            row.genero
         ));
     },
 

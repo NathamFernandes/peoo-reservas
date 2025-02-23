@@ -1,5 +1,5 @@
 class Filme {
-    constructor(id, titulo, genero_id, ano, diretor, sinopse, classificacao, elenco, status) {
+    constructor(id, titulo, genero_id, ano, diretor, sinopse, classificacao, elenco, status, genero) {
         this.id = id;
         this.titulo = titulo;
         this.genero_id = genero_id;
@@ -9,6 +9,16 @@ class Filme {
         this.classificacao = classificacao;
         this.elenco = elenco;
         this.status = status;
+        this.genero = genero;
+
+        switch (status) {
+            case 1:
+                this.status_name = "Disponível";
+                break;
+            case 2:
+                this.status_name = "Alugado";
+                break;
+        }
     }
 
     // Getters
@@ -39,6 +49,12 @@ class Filme {
     getStatus() {
         return this.status;
     }
+    getGenero() {
+        return this.genero;
+    }
+    getStatusName() {
+        return this.status_name;
+    }
 
     // Setters
     setId(id) {
@@ -67,6 +83,12 @@ class Filme {
     }
     setStatus(status) {
         this.status = status;
+    }
+    setGenero(genero) {
+        this.genero = genero;
+    }
+    setStatusName(status_name) {
+        this.status_name = status_name;
     }
 }
 

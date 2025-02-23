@@ -4,7 +4,7 @@ const FilmeController = {
 
     async getAll(req, res) {
         try {
-            const filmes = await FilmeRepository.findAll();
+            const filmes = await FilmeRepository.findAll(req.headers.innerjoin);
             res.json(filmes);
         } catch (err) {
             res.status(500).json({ error: "Erro na busca de filmes", err });
