@@ -6,7 +6,7 @@ const FilmeRouters = express.Router();
 FilmeRouters.get("/", FilmeController.getAll);
 FilmeRouters.post("/", FilmeController.create);
 FilmeRouters.get("/:id", FilmeController.getById);
-// FilmeRouters.put("/", FilmeController.update);
-// FilmeRouters.delete("/", FilmeController.destroy);
+FilmeRouters.put("/:id", FilmeController.update);
+FilmeRouters.delete("/:id", FilmeController.destroy);
 
 export default FilmeRouters;

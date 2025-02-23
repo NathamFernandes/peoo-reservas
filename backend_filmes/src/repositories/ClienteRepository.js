@@ -5,7 +5,6 @@ const ClienteRepository = {
 
     async findAll() {
         const rows = await connection1.query("select * from cliente", []);
-        console.log(rows);
         return rows.map(row => new Cliente(row.id, row.nome, row.endereco, row.email, row.cpf));
     },
 
@@ -13,7 +12,6 @@ const ClienteRepository = {
         const result = await connection1.query("insert into cliente (nome, endereco, email, cpf) values (?, ?, ?, ?)",
             [cliente.nome, cliente.endereco, cliente.email, cliente.cpf],
         );
-
 
         cliente.id = result.insertId;
         return cliente;
@@ -24,7 +22,19 @@ const ClienteRepository = {
         if (row) {
             return new Cliente(row.id, row.nome, row.endereco, row.email, row.cpf);
         }
-        return null; // Retorna null se não encontrar o gênero
+        return null; // Retorna null se não encontrar o cliente
+    },
+
+    async updateCliente(id, cliente) {
+        await connection1.query("update cliente set nome = ?, endereco = ?, email = ?, cpf = ? where id = ?",
+            [cliente.nome, cliente.endereco, cliente.email, cliente.cpf, id]
+        );
+        return { id, ...cliente };
+    },
+
+    async deleteCliente(id) {
+        await connection1.query("delete from cliente where id = ?", [id]);
+        return { message: "Cliente deletado com sucesso" };
     }
 }
 

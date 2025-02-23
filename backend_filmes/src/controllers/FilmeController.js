@@ -34,6 +34,43 @@ const FilmeController = {
         } catch (err) {
             res.status(500).json({ error: "Erro na busca do filme", err });
         }
+    },
+
+    // Método para atualizar um filme
+    async update(req, res) {
+        const { id } = req.params;
+        const { titulo, genero_id, ano, diretor, sinopse, classificacao, elenco, status } = req.body;
+        try {
+            const filmeExistente = await FilmeRepository.findById(id);
+            if (!filmeExistente) {
+                return res.status(404).json({ error: "Filme não encontrado" });
+            }
+
+            const filmeAtualizado = await FilmeRepository.updateFilme(id, { titulo, genero_id, ano, diretor, sinopse, classificacao, elenco, status });
+            res.json(filmeAtualizado);
+        } catch (err) {
+            res.status(500).json({ error: "Erro na atualização do filme", err });
+        }
+    },
+
+    // Método para excluir um filme
+    async destroy(req, res) {
+        const { id } = req.params;
+        try {
+            const filmeExistente = await FilmeRepository.findById(id);
+            if (!filmeExistente) {
+                return res.status(404).json({ error: "Filme não encontrado" });
+            }
+
+            const sucesso = await FilmeRepository.deleteFilme(id);
+            if (sucesso) {
+                res.status(204).send(); // Filme excluído com sucesso
+            } else {
+                res.status(400).json({ error: "Erro na exclusão do filme" });
+            }
+        } catch (err) {
+            res.status(500).json({ error: "Erro na exclusão do filme", err });
+        }
     }
 }
 

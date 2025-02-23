@@ -2,19 +2,21 @@ import LocacaoRepository from "../repositories/LocacaoRepository.js";
 
 const LocacaoController = {
 
+    // Função para buscar todas as locações
     async getAll(req, res) {
         try {
-            const locacao = await LocacaoRepository.findAll();
-            res.json(locacao);
+            const locacoes = await LocacaoRepository.findAll();
+            res.json(locacoes);
         } catch (err) {
             res.status(500).json({ error: "Erro na busca de locações", err });
         }
     },
 
+    // Função para criar uma nova locação
     async create(req, res) {
-        const { data_inicio, data_final, data_devolucao, cliente_id } = req.body;
+        const { data_inicio, data_final, cliente_id } = req.body;
         try {
-            const novaLocacao = { data_inicio, data_final, data_devolucao, cliente_id };
+            const novaLocacao = { data_inicio, data_final, cliente_id };
             const locacaoCriada = await LocacaoRepository.createLocacao(novaLocacao);
             res.status(201).json(locacaoCriada);
         } catch (err) {
@@ -22,8 +24,9 @@ const LocacaoController = {
         }
     },
 
+    // Função para buscar uma locação por ID
     async getById(req, res) {
-        const { id } = req.params; // O ID será passado como parâmetro na URL
+        const { id } = req.params;
         try {
             const locacao = await LocacaoRepository.findById(id);
             if (locacao) {
@@ -33,6 +36,39 @@ const LocacaoController = {
             }
         } catch (err) {
             res.status(500).json({ error: "Erro na busca da locação", err });
+        }
+    },
+
+    // Função para atualizar uma locação existente
+    async update(req, res) {
+        const { id } = req.params;
+        const { data_inicio, data_final, data_devolucao, cliente_id } = req.body;
+        try {
+            const locacaoAtualizada = await LocacaoRepository.updateLocacao(id, {
+                data_inicio, data_final, data_devolucao, cliente_id
+            });
+            if (locacaoAtualizada) {
+                res.json(locacaoAtualizada);
+            } else {
+                res.status(404).json({ error: "Locação não encontrada para atualização" });
+            }
+        } catch (err) {
+            res.status(500).json({ error: "Erro ao atualizar locação", err });
+        }
+    },
+
+    // Função para excluir uma locação
+    async destroy(req, res) {
+        const { id } = req.params;
+        try {
+            const locacaoDeletada = await LocacaoRepository.deleteLocacao(id);
+            if (locacaoDeletada) {
+                res.status(204).send(); // Envia código de sucesso sem conteúdo
+            } else {
+                res.status(404).json({ error: "Locação não encontrada para exclusão" });
+            }
+        } catch (err) {
+            res.status(500).json({ error: "Erro ao excluir locação", err });
         }
     }
 }

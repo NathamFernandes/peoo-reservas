@@ -35,6 +35,37 @@ const ClienteController = {
         } catch (err) {
             res.status(500).json({ error: "Erro na busca do cliente", err });
         }
+    },
+
+    async update(req, res) {
+        const { id } = req.params;
+        const { nome, endereco, email, cpf } = req.body;
+        try {
+            const clienteExistente = await ClienteRepository.findById(id);
+            if (!clienteExistente) {
+                return res.status(404).json({ error: "Cliente não encontrado" });
+            }
+
+            const clienteAtualizado = await ClienteRepository.updateCliente(id, { nome, endereco, email, cpf });
+            res.json(clienteAtualizado);
+        } catch (err) {
+            res.status(500).json({ error: "Erro na atualização do cliente", err });
+        }
+    },
+
+    async destroy(req, res) {
+        const { id } = req.params;
+        try {
+            const clienteExistente = await ClienteRepository.findById(id);
+            if (!clienteExistente) {
+                return res.status(404).json({ error: "Cliente não encontrado" });
+            }
+
+            await ClienteRepository.deleteCliente(id);
+            res.status(204).send();
+        } catch (err) {
+            res.status(500).json({ error: "Erro na exclusão do cliente", err });
+        }
     }
 }
 

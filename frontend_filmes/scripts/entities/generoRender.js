@@ -1,7 +1,7 @@
-import { get, post } from "../api.js";
+import { get, post, put, del } from "../api.js";
 import state from "../state.js";
 
-// Função para carregar os generos
+// Função para carregar os gêneros
 const carregarGeneros = async () => {
     const generos = await get("http://localhost:3000/generos");
     state.generos = generos;
@@ -9,7 +9,7 @@ const carregarGeneros = async () => {
     renderizarListaGeneros(generos);
 };
 
-// Função para renderizar a lista de generos
+// Função para renderizar a lista de gêneros
 const renderizarListaGeneros = (generos) => {
     let tabela = `
         <button type="button" class="btn btn-primary" id="novo-genero">Cadastrar novo gênero</button>
@@ -19,6 +19,7 @@ const renderizarListaGeneros = (generos) => {
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Nome</th>
+                    <th scope="col">Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,6 +29,14 @@ const renderizarListaGeneros = (generos) => {
         <tr>
             <td>${genero.id}</td>
             <td>${genero.nome}</td>
+            <td>
+                <button class="btn btn-warning btn-sm editar-genero" data-id="${genero.id}">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger btn-sm excluir-genero" data-id="${genero.id}">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
         </tr>
     `).join(" ");
 
@@ -37,9 +46,27 @@ const renderizarListaGeneros = (generos) => {
     document.getElementById("novo-genero").addEventListener("click", () => {
         renderizarFormularioGenero();
     });
+
+    document.querySelectorAll(".editar-genero").forEach(btn => {
+        btn.addEventListener("click", async (e) => {
+            const id = e.target.closest("button").getAttribute("data-id");
+            const genero = await get(`http://localhost:3000/generos/${id}`);
+            renderizarFormularioEdicao(genero);
+        });
+    });
+
+    document.querySelectorAll(".excluir-genero").forEach(btn => {
+        btn.addEventListener("click", async (e) => {
+            const id = e.target.closest("button").getAttribute("data-id");
+            if (confirm("Tem certeza que deseja excluir este gênero?")) {
+                await del(`http://localhost:3000/generos/${id}`);
+                await carregarGeneros();
+            }
+        });
+    });
 };
 
-// Função para renderizar o formulário de genero
+// Função para renderizar o formulário de gênero
 const renderizarFormularioGenero = () => {
     const formulario = `
         <form id="form-genero">
@@ -47,7 +74,7 @@ const renderizarFormularioGenero = () => {
                 <label for="nome">Nome</label>
                 <input type="text" id="nome" class="form-control" placeholder="Digite o nome do gênero">
             </div>
-            <button type="submit" class="btn btn-primary" style="margin-top:10px">Salvar</button>
+            <button type="submit" class="btn btn-primary" style="margin-top:10px">Cadastrar</button>
         </form>
     `;
 
@@ -57,7 +84,30 @@ const renderizarFormularioGenero = () => {
         e.preventDefault();
         const nome = document.getElementById("nome").value;
         await post("http://localhost:3000/generos", { nome });
-        await carregarGeneros(); // Recarrega os dados
+        await carregarGeneros();
+    });
+};
+
+// Função para renderizar o formulário de edição de gênero
+const renderizarFormularioEdicao = (genero) => {
+    const formulario = `
+        <form id="form-editar-genero">
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" class="form-control" value="${genero.nome}">
+            </div>
+            <button type="submit" class="btn btn-success" style="margin-top:10px">Atualizar</button>
+        </form>
+    `;
+
+    document.getElementById("app-content").innerHTML = formulario;
+
+    document.getElementById("form-editar-genero").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const nome = document.getElementById("nome").value;
+
+        await put(`http://localhost:3000/generos/${genero.id}`, { nome });
+        await carregarGeneros();
     });
 };
 

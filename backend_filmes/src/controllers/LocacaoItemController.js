@@ -34,8 +34,41 @@ const LocacaoItemController = {
         } catch (err) {
             res.status(500).json({ error: "Erro na busca do locação item", err });
         }
-    }
+    },
 
+    // Método para atualizar um locação item
+    async update(req, res) {
+        const { id } = req.params; // O ID será passado como parâmetro na URL
+        const { locacao_id, filme_id, preco } = req.body;
+        try {
+            const locacaoItemExistente = await LocacaoItemRepository.findById(id);
+            if (locacaoItemExistente) {
+                const locacaoItemAtualizado = { locacao_id, filme_id, preco };
+                const updatedLocacaoItem = await LocacaoItemRepository.updateLocacaoItem(id, locacaoItemAtualizado);
+                res.json(updatedLocacaoItem);
+            } else {
+                res.status(404).json({ error: "Locação item não encontrado para atualizar" });
+            }
+        } catch (err) {
+            res.status(500).json({ error: "Erro ao atualizar locação item", err });
+        }
+    },
+
+    // Método para deletar um locação item
+    async destroy(req, res) {
+        const { id } = req.params; // O ID será passado como parâmetro na URL
+        try {
+            const locacaoItemExistente = await LocacaoItemRepository.findById(id);
+            if (locacaoItemExistente) {
+                await LocacaoItemRepository.deleteLocacaoItem(id);
+                res.status(204).json(); // 204 é "No Content" para indicar que foi deletado com sucesso
+            } else {
+                res.status(404).json({ error: "Locação item não encontrado para deletar" });
+            }
+        } catch (err) {
+            res.status(500).json({ error: "Erro ao deletar locação item", err });
+        }
+    }
 }
 
 export default LocacaoItemController;

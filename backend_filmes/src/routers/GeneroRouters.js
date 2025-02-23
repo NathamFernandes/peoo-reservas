@@ -6,7 +6,7 @@ const GeneroRouters = express.Router();
 GeneroRouters.get("/", GeneroController.getAll);
 GeneroRouters.post("/", GeneroController.create);
 GeneroRouters.get("/:id", GeneroController.getById);
-// GeneroRouters.put("/", GeneroController.update);
-// GeneroRouters.delete("/", GeneroController.destroy);
+GeneroRouters.put("/:id", GeneroController.update);
+GeneroRouters.delete("/:id", GeneroController.destroy);
 
 export default GeneroRouters;

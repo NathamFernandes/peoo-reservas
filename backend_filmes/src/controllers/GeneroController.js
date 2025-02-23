@@ -23,7 +23,7 @@ const GeneroController = {
     },
 
     async getById(req, res) {
-        const { id } = req.params; // O ID será passado como parâmetro na URL
+        const { id } = req.params;
         try {
             const genero = await GeneroRepository.findById(id);
             if (genero) {
@@ -34,8 +34,38 @@ const GeneroController = {
         } catch (err) {
             res.status(500).json({ error: "Erro na busca do gênero", err });
         }
-    }
+    },
 
-}
+    async update(req, res) {
+        const { id } = req.params;
+        const { nome } = req.body;
+        try {
+            const generoExistente = await GeneroRepository.findById(id);
+            if (!generoExistente) {
+                return res.status(404).json({ error: "Gênero não encontrado" });
+            }
+
+            const generoAtualizado = await GeneroRepository.updateGenero(id, { nome });
+            res.json(generoAtualizado);
+        } catch (err) {
+            res.status(500).json({ error: "Erro na atualização do gênero", err });
+        }
+    },
+
+    async destroy(req, res) {
+        const { id } = req.params;
+        try {
+            const generoExistente = await GeneroRepository.findById(id);
+            if (!generoExistente) {
+                return res.status(404).json({ error: "Gênero não encontrado" });
+            }
+
+            await GeneroRepository.deleteGenero(id);
+            res.status(204).send();
+        } catch (err) {
+            res.status(500).json({ error: "Erro na exclusão do gênero", err });
+        }
+    }
+};
 
 export default GeneroController;

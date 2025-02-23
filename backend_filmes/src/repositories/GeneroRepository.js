@@ -22,6 +22,18 @@ const GeneroRepository = {
             return new Genero(row.id, row.nome);
         }
         return null; // Retorna null se não encontrar o gênero
+    },
+
+    async updateGenero(id, genero) {
+        await connection1.query("update genero set nome = ? where id = ?",
+            [genero.nome, id]
+        );
+        return { id, ...genero };
+    },
+
+    async deleteGenero(id) {
+        await connection1.query("delete from genero where id = ?", [id]);
+        return { message: "Gênero deletado com sucesso" };
     }
 }
 

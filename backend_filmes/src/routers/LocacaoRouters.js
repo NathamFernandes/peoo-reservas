@@ -6,7 +6,7 @@ const LocacaoRouters = express.Router();
 LocacaoRouters.get("/", LocacaoController.getAll);
 LocacaoRouters.post("/", LocacaoController.create);
 LocacaoRouters.get("/:id", LocacaoController.getById);
-// LocacaoRouters.put("/", LocacaoController.update);
-// LocacaoRouters.delete("/", LocacaoController.destroy);
+LocacaoRouters.put("/:id", LocacaoController.update);
+LocacaoRouters.delete("/:id", LocacaoController.destroy);
 
 export default LocacaoRouters;

@@ -3,7 +3,7 @@ import connection1 from "../config/dbConnect.js";
 
 const FilmeRepository = {
     async findAll() {
-        const rows = await connection1.query(` select * from filme`, []);
+        const rows = await connection1.query(`select * from filme`, []);
 
         return rows.map(row => new Filme(
             row.id,
@@ -50,7 +50,40 @@ const FilmeRepository = {
                 row.status
             );
         }
-        return null; // Retorna null se não encontrar o gênero
+        return null; // Retorna null se não encontrar o filme
+    },
+
+    // Método para atualizar um filme
+    async updateFilme(id, filme) {
+        const result = await connection1.query(
+            `UPDATE filme 
+            SET titulo = ?, genero_id = ?, ano = ?, diretor = ?, sinopse = ?, classificacao = ?, elenco = ?, status = ? 
+            WHERE id = ?`,
+            [
+                filme.titulo,
+                filme.genero_id,
+                filme.ano,
+                filme.diretor,
+                filme.sinopse,
+                filme.classificacao,
+                filme.elenco,
+                filme.status,
+                id
+            ]
+        );
+
+        if (result.affectedRows > 0) {
+            // Se foi atualizado, retorna o filme atualizado
+            return { ...filme, id };
+        }
+        return null; // Retorna null se não houver alteração
+    },
+
+    // Método para excluir um filme
+    async deleteFilme(id) {
+        const result = await connection1.query("DELETE FROM filme WHERE id = ?", [id]);
+
+        return result.affectedRows > 0; // Retorna true se o filme foi excluído
     }
 }
 
