@@ -3,19 +3,15 @@ dotenv.config();
 
 import app from "./src/app.js";
 import connection from "./src/config/dbConnect.js";
-import ProjetoRouters from "./src/routers/ProjetoRouters.js";
-import CategoriaRouters from "./src/routers/CategoriaRouter.js";
-import FilmeRouters from "./src/routers/FilmeRouters.js";
 import GeneroRouters from "./src/routers/GeneroRouters.js";
+import ClienteRouters from "./src/routers/ClienteRouters.js";
 
 //Definição de uma constante para a porta TCP
 const PORT = process.env.PORT || 3000;
 
-app.use("/projetos", ProjetoRouters);
-app.use("/categorias", CategoriaRouters);
-
-app.use("/filmes", FilmeRouters);
 app.use("/generos", GeneroRouters);
+// app.use("/filmes", FilmeRouters);
+app.use("/clientes", ClienteRouters);
 
 //Inicialização de um servidor WEB
 app.listen(PORT, () => {
