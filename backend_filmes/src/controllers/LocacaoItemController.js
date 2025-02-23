@@ -20,6 +20,20 @@ const LocacaoItemController = {
         } catch (err) {
             res.status(500).json({ error: "Erro na criação da locação item", err });
         }
+    },
+
+    async getById(req, res) {
+        const { id } = req.params; // O ID será passado como parâmetro na URL
+        try {
+            const locacaoItem = await LocacaoItemRepository.findById(id);
+            if (locacaoItem) {
+                res.json(locacaoItem);
+            } else {
+                res.status(404).json({ error: "Locação item não encontrado" });
+            }
+        } catch (err) {
+            res.status(500).json({ error: "Erro na busca do locação item", err });
+        }
     }
 
 }

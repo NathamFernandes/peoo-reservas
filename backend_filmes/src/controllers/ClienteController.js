@@ -21,8 +21,21 @@ const ClienteController = {
         } catch (err) {
             res.status(500).json({ error: "Erro na criação do cliente", err });
         }
-    }
+    },
 
+    async getById(req, res) {
+        const { id } = req.params; // O ID será passado como parâmetro na URL
+        try {
+            const cliente = await ClienteRepository.findById(id);
+            if (cliente) {
+                res.json(cliente);
+            } else {
+                res.status(404).json({ error: "Cliente não encontrado" });
+            }
+        } catch (err) {
+            res.status(500).json({ error: "Erro na busca do cliente", err });
+        }
+    }
 }
 
 export default ClienteController;

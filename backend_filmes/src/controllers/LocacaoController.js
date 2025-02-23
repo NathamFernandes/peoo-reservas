@@ -20,8 +20,21 @@ const LocacaoController = {
         } catch (err) {
             res.status(500).json({ error: "Erro na criação da locação", err });
         }
-    }
+    },
 
+    async getById(req, res) {
+        const { id } = req.params; // O ID será passado como parâmetro na URL
+        try {
+            const locacao = await LocacaoRepository.findById(id);
+            if (locacao) {
+                res.json(locacao);
+            } else {
+                res.status(404).json({ error: "Locação não encontrada" });
+            }
+        } catch (err) {
+            res.status(500).json({ error: "Erro na busca da locação", err });
+        }
+    }
 }
 
 export default LocacaoController;

@@ -20,8 +20,21 @@ const FilmeController = {
         } catch (err) {
             res.status(500).json({ error: "Erro na criação do filme", err });
         }
-    }
+    },
 
+    async getById(req, res) {
+        const { id } = req.params; // O ID será passado como parâmetro na URL
+        try {
+            const filme = await FilmeRepository.findById(id);
+            if (filme) {
+                res.json(filme);
+            } else {
+                res.status(404).json({ error: "Filme não encontrado" });
+            }
+        } catch (err) {
+            res.status(500).json({ error: "Erro na busca do filme", err });
+        }
+    }
 }
 
 export default FilmeController;

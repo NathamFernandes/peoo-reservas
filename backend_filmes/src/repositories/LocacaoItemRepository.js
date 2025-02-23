@@ -13,6 +13,14 @@ const LocacaoItemRepository = {
         );
         locacaoItem.id = result.insertId;
         return locacaoItem;
+    },
+
+    async findById(id) {
+        const [row] = await connection1.query("select * from locacao_item where id = ?", [id]);
+        if (row) {
+            return new LocacaoItem(row.id, row.locacao_id, row.filme_id, row.preco);
+        }
+        return null; // Retorna null se não encontrar o gênero
     }
 }
 

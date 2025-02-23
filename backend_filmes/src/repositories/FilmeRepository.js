@@ -3,11 +3,7 @@ import connection1 from "../config/dbConnect.js";
 
 const FilmeRepository = {
     async findAll() {
-        const rows = await connection1.query(`
-            SELECT filme.*, genero.nome AS genero 
-            FROM filme 
-            INNER JOIN genero ON filme.genero_id = genero.id
-        `, []);
+        const rows = await connection1.query(` select * from filme`, []);
 
         return rows.map(row => new Filme(
             row.id,
@@ -19,7 +15,6 @@ const FilmeRepository = {
             row.classificacao,
             row.elenco,
             row.status,
-            row.genero
         ));
     },
 
@@ -38,6 +33,24 @@ const FilmeRepository = {
         );
         filme.id = result.insertId;
         return filme;
+    },
+
+    async findById(id) {
+        const [row] = await connection1.query("select * from filme where id = ?", [id]);
+        if (row) {
+            return new Filme(
+                row.id,
+                row.titulo,
+                row.genero_id,
+                row.ano,
+                row.diretor,
+                row.sinopse,
+                row.classificacao,
+                row.elenco,
+                row.status
+            );
+        }
+        return null; // Retorna null se não encontrar o gênero
     }
 }
 

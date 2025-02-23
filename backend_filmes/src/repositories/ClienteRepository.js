@@ -17,6 +17,14 @@ const ClienteRepository = {
 
         cliente.id = result.insertId;
         return cliente;
+    },
+
+    async findById(id) {
+        const [row] = await connection1.query("select * from cliente where id = ?", [id]);
+        if (row) {
+            return new Cliente(row.id, row.nome, row.endereco, row.email, row.cpf);
+        }
+        return null; // Retorna null se não encontrar o gênero
     }
 }
 

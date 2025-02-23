@@ -14,6 +14,14 @@ const LocacaoRepository = {
         );
         locacao.id = result.insertId;
         return locacao;
+    },
+
+    async findById(id) {
+        const [row] = await connection1.query("select * from locacao where id = ?", [id]);
+        if (row) {
+            return new Locacao(row.id, row.data_inicio, row.data_final, row.data_devolucao, row.cliente_id);
+        }
+        return null; // Retorna null se não encontrar o gênero
     }
 }
 
