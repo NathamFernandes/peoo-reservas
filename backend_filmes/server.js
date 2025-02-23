@@ -23,4 +23,4 @@ app.listen(PORT, () => {
     console.log("Servidor inicializado");
 });
 
-// your life is your own - N
+// your life is your own - N (love u BT)
